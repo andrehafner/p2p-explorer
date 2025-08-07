@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    shm_size: 4g
+    environment: ergo
+#      POSTGRES_PASSWORD: foo
+      POSTGRES_PASSWORD: zmalqpALZM_17?#$
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data:rw
+  redis:
+    image: redis:latest
+    restart: always
+    command: ["redis-server"]
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - ./data/redis:/usr/local/etc/redis
