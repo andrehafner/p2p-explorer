@@ -114,7 +114,7 @@ server {
 }
 ```
 Lastly, we need the .pem and .key files for the https domain name to work
-Reach out to the Ergo Infra DAO to become a member to receive these files: PAIDEIA LINK
+Reach out to the Ergo Infra DAO to become a member to receive these files: [PAIDEIA](https://app.paideia.im/ergoinfradao)
 
 Once obtained, open them in a formatless text editor (link notpad++ pr sublime text) and run the following commands:
 Create directories as needed
