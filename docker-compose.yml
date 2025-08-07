@@ -1,0 +1,201 @@
+version: "3.8"
+
+networks:
+  default:
+    name: ergo-explorer
+  ergo-node:
+    external: true
+
+volumes:
+  ergo_redis:
+    external: true
+
+services:
+  # Postgresql database
+  db:
+    build:
+      context: ./db
+      args:
+        EXPLORER_VERSION: 9.17.4
+    # -- Uncomment and edit if wanting to set custom work_mem value
+    # -- https://www.postgresql.org/docs/current/runtime-config-resource.html
+    # command: ["postgres", "-c", "work_mem=4MB"]
+    shm_size: 18g
+    environment:
+      POSTGRES_DB: ergo
+      POSTGRES_USER: ergo
+    env_file:
+      # Defines POSTGRES_PASSWORD
+      - ./db/db.secret
+    volumes:
+      # Mapped volume for easier Postgres upgrades.
+      # Make sure the path exists or edit it here.
+      # See also readme_pg_upgrade.md
+      - /var/lib/explorer_pg/15/data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Redis
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    command: ["redis-server"]
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - ergo_redis:/usr/local/etc/redis
+    restart: unless-stopped
+
+  # Redis request cache
+  redis_rc:
+    image: redis:latest
+    restart: unless-stopped
+    command: ["redis-server"]
+    expose:
+      - "6379"
+    restart: unless-stopped
+
+  # Explorer backend chain-grabber
+  grabber:
+    build:
+      context: ./explorer-backend-9.17.4
+      dockerfile: chain-grabber.Dockerfile
+    env_file:
+      # Defines POSTGRES_PASSWORD
+      - ./db/db.secret
+    volumes:
+      - ./explorer-backend.conf:/explorer-backend.conf:ro
+    networks:
+      - default
+      - ergo-node
+    command: /explorer-backend.conf
+    links:
+      - "db"
+      - "redis_rc"
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Mempool tracker
+  utx-tracker:
+    build:
+      context: ./explorer-backend-9.17.4
+      dockerfile: utx-tracker.Dockerfile
+    env_file:
+      # Defines POSTGRES_PASSWORD
+      - ./db/db.secret
+    volumes:
+      - ./explorer-backend.conf:/explorer-backend.conf:ro
+    networks:
+      - default
+      - ergo-node
+    command: /explorer-backend.conf
+    links:
+      - "db"
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Mempool broadcaster
+  utx-broadcaster:
+    build:
+      context: ./explorer-backend-9.17.4
+      dockerfile: utx-broadcaster.Dockerfile
+    volumes:
+      - ./explorer-backend.conf:/explorer-backend.conf:ro
+    networks:
+      - default
+      - ergo-node
+    command: /explorer-backend.conf
+    links:
+      - "redis"
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Explorer API
+  api:
+    build:
+      context: ./explorer-backend-9.17.4
+      dockerfile: explorer-api.Dockerfile
+    env_file:
+      # Defines POSTGRES_PASSWORD
+      - ./db/db.secret
+    volumes:
+      - ./explorer-backend.conf:/explorer-backend.conf:ro
+    command: /explorer-backend.conf
+    links:
+      - "db"
+      - "redis"
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Explorer UI
+  ui:
+    build:
+      context: ./ui
+      args:
+        # Set this to the url the api should be accessed at: http(s)://<your-ip-or-domain>:8080
+        API: https://api-p2p.ergoplatform.com
+        # Name of the network (mainnet, testnet, devnet, ...)
+        LABEL: "Mainnet"
+    links:
+      - "api"
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+  
+  # GraphQL
+  graphql:
+    build:
+      context: ./graphql
+      args:
+        VERSION: "0.5.3"
+    environment:
+      # database host address    
+      DB_HOST: db                     
+      # database host port      
+      DB_PORT: 5432                   
+      # database name      
+      DB_NAME: ergo                   
+      # database user name      
+      DB_USER_NAME: ergo              
+      # ergo node address and port
+      ERGO_NODE_ADDRESS: http://172.17.0.1:9053    
+      # optional: MAINNET or TESTNET      
+      NETWORK: MAINNET                
+      # optional: redis host address
+      REDIS_HOST: redis               
+      # optional: redis host port      
+      REDIS_PORT: 6379                
+      # optional: redis username      
+      # REDIS_USER_NAME:                
+      # optional: redis user password      
+      # REDIS_USER_PWD:                 
+      # optional: maximum query depth
+      MAX_QUERY_DEPTH: 5              
+    env_file:
+      # Defines DB_USER_PWD
+      - ./db/db.secret
+    links:
+      - "db"
+      - "redis"
+    ports:
+      - 3001:3000
+    restart: unless-stopped
