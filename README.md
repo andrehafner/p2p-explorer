@@ -21,7 +21,7 @@ This will download the repository into a folder named p2p-explorer. To navigate 
 cd p2p-explorer
 ```
 Typically, there are three passwords you can change (or just don't touch anything). When this is firt built on your system, it takes these passwords and uses them, any changes to these files after that initial build and you would need to rebuild the database or change the password on the database manually).
-p2p-explorer/explorer-backend-9.17.4/docker-compose.yaml has a postgres password
+p2p-explorer/explorer-backend-9.17.4/docker-compose.yaml has a postgres password and IP change
 p2p-explorer/db/db.secret has a db and a postgres password
 *I need to see which is actually used for now, in the sample i have two different ones, so, one must not be utilized*
 
@@ -32,6 +32,18 @@ sudo nano p2p-explorer/explorer-backend-9.17.4/docker-compose.yaml
 sudo nano p2p-explorer/db/db.secret
 ```
 if you do edit, after editing, press ctrl+o and then enter to save, then ctrl+x to exit
+Before we build, we need to do a required update on docker-compose.yaml
+```
+sudo nano p2p-explorer/docker-compose.yml
+```
+look for this line: API: http://YOURIPADDRESS:8080 and replace YOURIPADDRESS with your external IP address
+
+We first need to create two things for docker:
+type the following commands into the terminal pressing enter after each one
+```
+sudo docker network create ergo-node
+sudo docker volume create --name-ergo_redis
+```
 
 Let's build, make sure you are in the main p2p-explorer folder!
 ```
@@ -52,10 +64,6 @@ sudo docker compose down
 ```
 
 You should now be able to access your explorer at the following http://yourIPaddress:3000
-Blocks should start showing up soon, if not, there is a config issue. If you are not planning on being part of the load balancer, open the docker-compose.yml file in the main p2pexplorer folder, look for this line:         API: https://api-p2p.ergoplatform.com
- and replace it with you IP example from above: http://yourIPaddress:3000 
- compose down and back up again, now your block scans should show on the left side of the browser window.
- NOTE: If joining the loadbalancer, this will be blank until we have added you and you have updated NGINX (don't worry, it's still syncing, just not showing).
 
 Next:
 If you do not want to be part of the load balance, you can simply download python/certbot and get a cert that will automatically configure NGINX, after that, replace all intances of the below NGINX file where it says the p2p domain to your domain, and fix the docker-compose.yml url above (no need for port 3000 if you are using NGINX properly and a domain name.
