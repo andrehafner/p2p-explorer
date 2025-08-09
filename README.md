@@ -33,6 +33,13 @@ sudo nano p2p-explorer/db/db.secret
 ```
 if you do edit, after editing, press ctrl+o and then enter to save, then ctrl+x to exit
 
+Since we are load balancing, we need the front end to rely on the local database, if we put the load balanced DNS, it will NOT be doing that, so we have to put the external IP address of this machine. This means you need to OPEN port 8080 and forward it to this machine (ping us in chat if you need help).
+Next, open the follwing file and find this line "API: http://yourexternalIP:8080" and put your external IP address where it says 'yourexternalIP': 
+```
+sudo nano p2p-explorer/docker-compose.yml
+```
+after editing, press ctrl+o and then enter to save, then ctrl+x to exit
+
 We first need to create two things for docker:
 type the following commands into the terminal pressing enter after each one
 ```
