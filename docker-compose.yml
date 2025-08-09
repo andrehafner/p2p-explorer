@@ -152,7 +152,7 @@ services:
       context: ./ui
       args:
         # Set this to the url the api should be accessed at: http(s)://<your-ip-or-domain>:8080
-        API: http://YOURIPADDRESS:8080
+        API: http://127.0.0.1:8080
         # Name of the network (mainnet, testnet, devnet, ...)
         LABEL: "Mainnet"
     links:
