@@ -5,7 +5,7 @@ Prerequisites:
 - Install Nginx
 - Install Docker
 - git
-- Fully Synced Ergo Node running on the same machine (accessible at 127.0.0.1:9053, or change config files in explorer for remote node)
+- Fully Synced AND INDEXED Ergo Node running on the same machine (accessible at 127.0.0.1:9053, or change config files in explorer for remote node)
 
 YOU HAVE TO HAVE THE ABOVE DONE 100% before proceeding. A node can take a day or more the fully sync, the below Explorer can take a few days to sync on top of that even.
 
