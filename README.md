@@ -32,11 +32,6 @@ sudo nano p2p-explorer/explorer-backend-9.17.4/docker-compose.yaml
 sudo nano p2p-explorer/db/db.secret
 ```
 if you do edit, after editing, press ctrl+o and then enter to save, then ctrl+x to exit
-Before we build, we need to do a required update on docker-compose.yaml
-```
-sudo nano p2p-explorer/docker-compose.yml
-```
-look for this line: API: http://YOURIPADDRESS:8080 and replace YOURIPADDRESS with your external IP address
 
 We first need to create two things for docker:
 type the following commands into the terminal pressing enter after each one
