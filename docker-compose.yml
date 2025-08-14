@@ -49,7 +49,6 @@ services:
       - "127.0.0.1:6379:6379"
     volumes:
       - ergo_redis:/usr/local/etc/redis
-    restart: unless-stopped
 
   # Redis request cache
   redis_rc:
@@ -58,7 +57,6 @@ services:
     command: ["redis-server"]
     expose:
       - "6379"
-    restart: unless-stopped
 
   # Explorer backend chain-grabber
   grabber:
@@ -77,11 +75,6 @@ services:
     links:
       - "db"
       - "redis_rc"
-    restart: unless-stopped
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
 
   # Mempool tracker
   utx-tracker:
@@ -99,11 +92,6 @@ services:
     command: /explorer-backend.conf
     links:
       - "db"
-    restart: unless-stopped
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
 
   # Mempool broadcaster
   utx-broadcaster:
@@ -118,11 +106,6 @@ services:
     command: /explorer-backend.conf
     links:
       - "redis"
-    restart: unless-stopped
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
 
   # Explorer API
   api:
@@ -138,13 +121,8 @@ services:
     links:
       - "db"
       - "redis"
-    restart: unless-stopped
     ports:
       - 8080:8080
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
 
   # Explorer UI
   ui:
@@ -159,8 +137,7 @@ services:
       - "api"
     ports:
       - 3000:3000
-    restart: unless-stopped
-  
+
   # GraphQL
   graphql:
     build:
@@ -168,28 +145,24 @@ services:
       args:
         VERSION: "0.5.3"
     environment:
-      # database host address    
-      DB_HOST: db                     
-      # database host port      
-      DB_PORT: 5432                   
-      # database name      
-      DB_NAME: ergo                   
-      # database user name      
-      DB_USER_NAME: ergo              
+      # database host address
+      DB_HOST: db
+      # database host port
+      DB_PORT: 5432
+      # database name
+      DB_NAME: ergo
+      # database user name
+      DB_USER_NAME: ergo
       # ergo node address and port
-      ERGO_NODE_ADDRESS: http://172.17.0.1:9053    
-      # optional: MAINNET or TESTNET      
-      NETWORK: MAINNET                
+      ERGO_NODE_ADDRESS: http://172.17.0.1:9053
+      # optional: MAINNET or TESTNET
+      NETWORK: MAINNET
       # optional: redis host address
-      REDIS_HOST: redis               
-      # optional: redis host port      
-      REDIS_PORT: 6379                
-      # optional: redis username      
-      # REDIS_USER_NAME:                
-      # optional: redis user password      
-      # REDIS_USER_PWD:                 
+      REDIS_HOST: redis
+      # optional: redis host port
+      REDIS_PORT: 6379
       # optional: maximum query depth
-      MAX_QUERY_DEPTH: 5              
+      MAX_QUERY_DEPTH: 5
     env_file:
       # Defines DB_USER_PWD
       - ./db/db.secret
@@ -198,4 +171,3 @@ services:
       - "redis"
     ports:
       - 3001:3000
-    restart: unless-stopped
