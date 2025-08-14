@@ -59,7 +59,7 @@ sudo docker volume create --name ergo_redis
 Let's build the project. Make sure you are in the main `p2p-explorer` folder!
 
 ```sh
-sudo docker-compose up --build
+sudo docker compose up --build
 ```
 
 This can take some time (approximately 10 minutes). If you chose a minimal Ubuntu server install, you will probably be missing some libraries, and the build will fail. Look at the terminal where it fails, copy that error to a chat, and ask how to install the missing library. Repeat the build command and rinse and repeat.
