@@ -31,7 +31,7 @@ services:
       # Mapped volume for easier Postgres upgrades.
       # Make sure the path exists or edit it here.
       # See also readme_pg_upgrade.md
-      - /var/lib/explorer_pg/15/data:/var/lib/postgresql/data
+      - ./postgres_data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
     restart: unless-stopped
