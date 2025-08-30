@@ -1,4 +1,6 @@
-# How to Participate in the p2p Infra DAO/Load Balancer for Ergo Explorer
+# How to Participate in the p2p Infra DAO/Load Balancer for Ergo Explorer -- ARM Version
+
+Updates made here for Ubuntu v24 on an ARM device (aarch64).
 
 ## Prerequisites
 - Ubuntu Server (preferred)
