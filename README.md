@@ -270,8 +270,8 @@ sudo systemctl reload nginx
 After making all changes, restart all services:
 
 ```sh
-sudo docker-compose down
-sudo docker-compose up -d
+sudo docker compose down
+sudo docker compose up -d
 ```
 
 ### Why Two Updates Are Needed
