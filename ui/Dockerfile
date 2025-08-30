@@ -1,7 +1,6 @@
-FROM node:18-alpine as build
-# FROM node:16-alpine as build
+FROM --platform=linux/arm64 node:20-bullseye as build
 ENV NODE_OPTIONS=--openssl-legacy-provider
-RUN apk update && apk upgrade && apk add --no-cache curl python3 make g++
+RUN apt-get update && apt-get upgrade -y && apt-get install -y curl python3 python3-pip make g++ python3-setuptools python3-distutils
 # npx browserslist@latest --update-db
 RUN curl -L https://github.com/ergoplatform/explorer-frontend/archive/refs/heads/master.tar.gz > /tmp/src.tar.gz && \
     tar -xf /tmp/src.tar.gz  -C /tmp && \
@@ -25,7 +24,7 @@ RUN npm i --location=global corepack && \
     yarn cache clean && \
     yarn global add serve
 RUN npx browserslist@latest --update-db
-FROM node:18-alpine
+FROM --platform=linux/arm64 node:20-bullseye
 ENV NODE_ENV production
 WORKDIR /app
 COPY --from=build /app/node_modules ./node_modules
