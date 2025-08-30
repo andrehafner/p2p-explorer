@@ -238,8 +238,36 @@ Change it to your Ergo node machine's IP address:
 master-nodes = ["http://192.168.1.100:9053"]
 ```
 
-### Step 3: Restart Services
-After making both changes, restart all services:
+### Step 3: Update Nginx Configuration
+If you're using Nginx with SSL/domain setup, you'll also need to update the Nginx configuration to point to your remote Ergo node instead of localhost.
+
+Edit the Nginx configuration file:
+
+```sh
+sudo nano /etc/nginx/sites-enabled/default
+```
+
+Find the server block for your node domain (e.g., `node-p2p.ergoplatform.com`) and change this line:
+
+```nginx
+location / { proxy_pass http://localhost:9053; }
+```
+
+To point to your Ergo node machine's IP address:
+
+```nginx
+location / { proxy_pass http://192.168.1.100:9053; }
+```
+
+After updating Nginx, test and reload the configuration:
+
+```sh
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+### Step 4: Restart Services
+After making all changes, restart all services:
 
 ```sh
 sudo docker-compose down
@@ -302,34 +330,34 @@ The p2p-explorer is a comprehensive blockchain exploration system built with a m
                             │                                │
                             ▼                                ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                              API & SERVICES LAYER                              │
+│                              API & SERVICES LAYER                               │
 ├─────────────────────────────────────────────────────────────────────────────────┤
-│  Backend API (Port 8080)  │  Chain Grabber  │  UTX Tracker  │  UTX Broadcaster │
-│  • REST API endpoints     │  • Block sync   │  • Mempool    │  • Transaction   │
-│  • Business logic         │  • Indexing     │  • UTXO       │  • broadcasting  │
-│  • Data processing        │  • Validation   │  • Monitoring │  • Network       │
+│  Backend API (Port 8080)  │  Chain Grabber  │  UTX Tracker  │  UTX Broadcaster  │
+│  • REST API endpoints     │  • Block sync   │  • Mempool    │  • Transaction    │
+│  • Business logic         │  • Indexing     │  • UTXO       │  • broadcasting   │
+│  • Data processing        │  • Validation   │  • Monitoring │  • Network        │
 └───────────────────────────┼─────────────────┼───────────────┼───────────────────┘
                             │                 │               │
                             ▼                 ▼               ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                              DATA & STORAGE LAYER                              │
+│                              DATA & STORAGE LAYER                               │
 ├─────────────────────────────────────────────────────────────────────────────────┤
-│  PostgreSQL Database      │  Redis Cache    │  Redis Request Cache              │
-│  (Port 5433)             │  (Port 6379)    │  (Internal)                      │
-│  • Blockchain data       │  • API responses│  • Query caching                  │
-│  • Transaction history   │  • Sessions     │  • Performance optimization       │
-│  • Address balances      │  • Real-time    │  • Reduced database load          │
+│  PostgreSQL Database     │  Redis Cache    │  Redis Request Cache               │
+│  (Port 5433)             │  (Port 6379)    │  (Internal)                        │
+│  • Blockchain data       │  • API responses│  • Query caching                   │
+│  • Transaction history   │  • Sessions     │  • Performance optimization        │
+│  • Address balances      │  • Real-time    │  • Reduced database load           │
 └───────────────────────────┼─────────────────┼───────────────────────────────────┘
                             │                 │
                             ▼                 ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                              BLOCKCHAIN LAYER                                  │
+│                              BLOCKCHAIN LAYER                                   │
 ├─────────────────────────────────────────────────────────────────────────────────┤
-│  Ergo Node (Port 9053)   │  P2P Network (Port 9030)                          │
+│  Ergo Node (Port 9053)   │  P2P Network (Port 9030)                           │
 │  • Full blockchain sync  │  • Peer discovery                                  │
 │  • Transaction pool      │  • Block propagation                               │
 │  • State management      │  • Network consensus                               │
-│  • API endpoints        │  • Decentralized communication                      │
+│  • API endpoints         │  • Decentralized communication                      │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
