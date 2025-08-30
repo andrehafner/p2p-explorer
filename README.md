@@ -320,13 +320,13 @@ The p2p-explorer is a comprehensive blockchain exploration system built with a m
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                              USER INTERFACE LAYER                              │
+│                              USER INTERFACE LAYER                               │
 ├─────────────────────────────────────────────────────────────────────────────────┤
-│  Frontend UI (Port 3000)  │  GraphQL Service (Port 3001)  │  Nginx (Port 443) │
-│  • Web interface          │  • Query language for data    │  • SSL termination │
-│  • User interactions      │  • Real-time subscriptions    │  • Load balancing  │
-│  • Responsive design      │  • Efficient data fetching    │  • Domain routing  │
-└───────────────────────────┼────────────────────────────────┼───────────────────┘
+│  Frontend UI (Port 3000)  │  GraphQL Service (Port 3001)  │  Nginx (Port 443)   │
+│  • Web interface          │  • Query language for data    │  • SSL termination  │
+│  • User interactions      │  • Real-time subscriptions    │  • Load balancing   │
+│  • Responsive design      │  • Efficient data fetching    │  • Domain routing   │
+└───────────────────────────┼────────────────────────────────┼───────────────────-┘
                             │                                │
                             ▼                                ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
@@ -353,11 +353,11 @@ The p2p-explorer is a comprehensive blockchain exploration system built with a m
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │                              BLOCKCHAIN LAYER                                   │
 ├─────────────────────────────────────────────────────────────────────────────────┤
-│  Ergo Node (Port 9053)   │  P2P Network (Port 9030)                           │
-│  • Full blockchain sync  │  • Peer discovery                                  │
-│  • Transaction pool      │  • Block propagation                               │
-│  • State management      │  • Network consensus                               │
-│  • API endpoints         │  • Decentralized communication                      │
+│  Ergo Node (Port 9053)   │  P2P Network (Port 9030)                             │
+│  • Full blockchain sync  │  • Peer discovery                                    │
+│  • Transaction pool      │  • Block propagation                                 │
+│  • State management      │  • Network consensus                                 │
+│  • API endpoints         │  • Decentralized communication                       │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
