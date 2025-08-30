@@ -56,6 +56,13 @@ sudo docker network create ergo-node
 sudo docker volume create --name ergo_redis
 ```
 
+Next, make sure there a postgres_data directory with appropriate permissions
+
+```sh
+mkdir -p postgres_data
+sudo chown 999:999 postgres_data
+```
+
 Let's build the project. Make sure you are in the main `p2p-explorer` folder!
 
 ```sh
