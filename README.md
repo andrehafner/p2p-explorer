@@ -148,4 +148,15 @@ sudo systemctl reload nginx
 sudo systemctl restart nginx
 ```
 
-You should now be able to reach the explorer at yourdomain.whatever or if you are part of the load balancer, p2p-explorer.ergoplatform.com
+Contact qx for coordination to the load balancer, you will need to do the following now that you are all synced (you can do this now while you wait): 
+1 - Open the follwing file again and find this line "API: http://yourexternalIP:8080" and replace it this time with https://api-p2p.ergoplatform.com: 
+```
+sudo nano p2p-explorer/docker-compose.yml
+```
+after editing, press ctrl+o and then enter to save, then ctrl+x to exit 
+Now you need to rebuild the UI with the following command so it uses the load balanced api: 
+```
+sudo docker compose build --no-cache ui
+```
+
+You should now be able to reach the explorer at p2p-explorer.ergoplatform.com
