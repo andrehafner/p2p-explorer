@@ -6,7 +6,8 @@ Prerequisites:
 - Install Docker
 - git
 - Fully Synced AND INDEXED Ergo Node running on the same machine (accessible at 127.0.0.1:9053, or change config files in explorer for remote node)
-- Forward the following ports on your router from external to internal: 443, 3000, 3001, 8080, 9053  
+- Forward the following ports on your router from external to internal: 443, 3000, 3001, 8080, 9053
+  
 YOU HAVE TO HAVE THE ABOVE DONE 100% before proceeding. A node can take a day or more the fully sync, the below Explorer can take a few days to sync on top of that even.
 
 ## 🐧 Cloning This Repository on Ubuntu
