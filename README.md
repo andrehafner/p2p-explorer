@@ -1,13 +1,13 @@
-# How to Participate in the p2p Infra DAO/Load Balancer for Ergo Explorer -- ARM Version
+# How to Participate in the p2p Infra DAO/Load Balancer for Ergo Explorer
 
-Updates made here for Ubuntu v24 on an ARM device (aarch64).
+Updates made here for Ubuntu v24 on an AMD device (See different branch for ARM aarch64 specific).
 
 ## Prerequisites
 - Ubuntu Server (preferred)
 - Nginx installed
 - Docker installed
 - Git installed
-- Fully synced AND indexed Ergo node running on the same machine (accessible at 127.0.0.1:9053, or change config files in explorer for a remote node)
+- Fully SYNCED and INDEXED Ergo node running on the same machine (accessible at 127.0.0.1:9053, or change config files in explorer for a remote node)
 
 **Note:** Ensure that all the above prerequisites are fully completed before proceeding. Syncing a node can take a day or more, and the Explorer can take a few additional days to sync on top of that.
 
